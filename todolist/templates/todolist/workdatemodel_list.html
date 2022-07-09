@@ -1,0 +1,136 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/list_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"/>
+<title>作業データの一覧</title>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+<script type="text/javascript">
+   $(function() {
+    $('body').attr('onload', function(){
+            window.name = "parent-window";
+        });
+
+        {% if workmode_info.status != 'available' %}
+            // 作業モードダイアログの作成
+            var dlg = $("#workmode-dialog");
+            dlg.dialog({
+                modal: true, 
+                autoOpen: false, 
+                title: '警告', 
+                buttons: {
+                    {% for button in workmode_info.dialog_data.buttons %}
+                        {{ button.name }}: function(){
+                            {% if button.url is not None %}
+                                window.location.href = "{{ button.url }}";
+                            {% else %}
+                                $(this).dialog("close");
+                            {% endif %}
+                        }, 
+                    {% endfor %}
+                }
+            });
+
+            // ダイアログ表示処理
+            $('#workmode-form button').click(function(){
+                dlg.dialog('open');
+                // return false;
+            });
+        {% else %}
+            // 作業モード遷移処理
+            $('#workmode-form').attr({
+                'action': "{% url 'todolist:workmode' slug=today_model.slug order=1 %}",
+                'target': 'subwindow', 
+            });
+            $('#workmode-form button').click(function(){
+                window.open(
+                    "{% url 'todolist:workmode' slug=today_model.slug order=1 %}", 
+                    "subwindow", 
+                    "width=400, height=160, top=690, left=1250"
+                );
+            });
+        {% endif %}
+   });
+</script>
+{% endblock head %}
+
+{% block content %}
+    <h2>作業データの一覧</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <p>{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <p><a href="{% url 'todolist:workdatemodel_detail' slug='today' %}">今日の作業</a></p>
+    <form action="{% url 'todolist:workdatemodel_new' %}" method="get"><button type="submit">作業データの作成</button></form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>作業予定日</th>
+                <th>平均計画実行時間割合</th>
+                <th>1日の進捗率</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for workdatemodel in object_list %}
+                <tr>
+                    <td><a href="{% url 'todolist:workdatemodel_detail' slug=workdatemodel.slug %}">{{ workdatemodel.work_date }}</a></td>
+                    <td>{{ workdatemodel.average_plan_excution_time_rate }}</td>
+                    <td>{{ workdatemodel.todo_achievement_rate_in_a_day }}</td>
+                    <td><form action="{% url 'todolist:workdatemodel_delete' slug=workdatemodel.slug %}" method="get"><button type="submit">削除</button></form></td>
+                    <td><form action="{% url 'todolist:workdatemodel_edit' slug=workdatemodel.slug %}" method="get"><button type="submit">編集</button></form></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a class="page-link text-primary d-inline-block" href="../{{ page_obj.previous_page_number }}/"><<</a></li>
+                {% else %}
+                    <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#"><<</div></li>
+                {% endif %}
+
+                {% for page_num in page_obj.paginator.page_range %}
+                    {% if page_num %}
+                        {% if page_num == pages.number %}
+                            <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">{{ page_num }}</div></li>
+                        {% else %}
+                            <li><a class="page-link text-primary d-inline-block" href="../{{ page_num }}/">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li class="disabled"><a class="page-link text-secondary d-inline-block text-muted" href="#">・・・</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li><a class="page-link text-primary d-inline-block" href="../{{ page_obj.next_page_number }}/">>></a></li>
+                {% else %}
+                    <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">>></div></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+    <form id = "workmode-form" method="get">
+        <button type="button">作業開始</button>
+    </form>
+
+    <div id="workmode-dialog">
+        {% for msg in workmode_info.dialog_data.messages %}
+        <p>{{ msg }}</p>
+        {% endfor %}
+    </div>
+
+{% endblock content %}

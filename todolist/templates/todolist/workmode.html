@@ -1,0 +1,71 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'todolist/css/workmode_style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"/>
+    <title>作業モード</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+    {{ todo_js|json_script:"todo-info" }}
+    <script src="{% static 'todolist/js/workmode.js' %}" defer></script>
+</head>
+<body>
+    <div>
+        <p id="help-text">残り時間</p>
+        <h1 id="time-left">00:00:00</h1>
+
+        <div>
+            <h3>
+                <span>{{ todo_py.order }} : {{ todo_py.title }}</span>
+                <span>目標 : </span><span>{{ todo_py.expected_time_min }}分</span>
+            </h3>
+        </div>
+        <table>
+            <tr>
+                <td>
+                    {% if todo_py.order > 1 %}
+                    <form id="back-form" action="{% url 'todolist:workmode' slug=workdatemodel.slug order=todo_py.back_order %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_table }}
+                        <button type="button">Back</button>
+                    </form>
+                    {% endif %}
+                </td>
+                <td>
+                    <button id="pause-restart-btn" type="button">Pause</button>
+                </td>
+                <td>
+                    <form id="next-form" action="{% url 'todolist:workmode' slug=workdatemodel.slug order=todo_py.next_order %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_table }}
+                        <button type="button">Complete! -> Next</button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+        <div>
+            <form id="drop-form" action="{% url 'todolist:workmode' slug=workdatemodel.slug order=todo_py.order %}" method="post">
+                {% csrf_token %}
+                {{ form.as_table }}
+                <button type="button">Drop</button>
+            </form>
+            {{ object.work_date }}
+        </div>
+    </div>
+
+    <!-- dialog -->
+    <div id="start-dialog">
+        <p>作業を開始しますか？</p>
+    </div>
+    <div id="back-dialog">
+        <p>前のToDoに戻りますか？</p>
+        <p>※前のToDoは未完了の状態に戻ります。</p>
+    </div>
+    <div id="drop-dialog">
+        <p>作業を中断しますか？</p>
+        <p>※現在作業中のToDo時間情報はリセットされます。</p>
+    </div>
+</body>
+</html>

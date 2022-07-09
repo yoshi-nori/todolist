@@ -1,0 +1,189 @@
+{% extends 'base.html' %}
+{% load static %}
+{% load todolist_extras %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/detail_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"/>
+<title>作業データの詳細 {{ workdatemodel.work_date }}</title>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+{% if workmode_info.status != 'no_today_model' %}
+<script type="text/javascript">
+    $(function() {
+        $('body').attr('onload', function(){
+            window.name = "parent-window";
+        });
+
+        {% if workmode_info.status != 'available' %}
+            // 作業モードダイアログの作成
+            var dlg = $("#workmode-dialog");
+            dlg.dialog({
+                modal: true, 
+                autoOpen: false, 
+                title: '警告', 
+                buttons: {
+                    {% for button in workmode_info.dialog_data.buttons %}
+                        {{ button.name }}: function(){
+                            {% if button.url is not None %}
+                                window.location.href = "{{ button.url }}";
+                            {% else %}
+                                $(this).dialog("close");
+                            {% endif %}
+                        }, 
+                    {% endfor %}
+                }
+            });
+
+            // ダイアログ表示処理
+            $('#workmode-form button').click(function(){
+                dlg.dialog('open');
+                // return false;
+            });
+        {% else %}
+            // 作業モード遷移処理
+            $('#workmode-form').attr({
+                'action': "{% url 'todolist:workmode' slug=workdatemodel.slug order=1 %}",
+                'target': 'subwindow', 
+            });
+            $('#workmode-form button').click(function(){
+                window.open(
+                    "{% url 'todolist:workmode' slug=workdatemodel.slug order=1 %}", 
+                    "subwindow", 
+                    "width=400, height=160, top=690, left=1250"
+                );
+            });
+        {% endif %}
+
+
+        // JSONデータを用いてJS言語のみでコーディングする方法
+        // jsonデータを通信する必要性によるパフォーマンスと
+        // コードの可動性、保守性（テンプレート言語はJSソースコードのエラーが分かりにくい）、HTMLファイルに埋め込む必要性などのトレードオフがある
+        // json構造のデータからダイアログを動的に作成するのに苦戦しているため、テンプレート言語で動的作成する方法を採用
+
+        // var workmode_info = document.getElementById('workmode_info').textContent;
+        // workmode_info = JSON.parse(workmode_info);
+
+        // // 作業モード遷移の条件を満たしている場合
+        // if (workmode_info.status === 'available') {
+        //     // 作業モード遷移処理
+        //     $('#workmode-form').attr({
+        //         'action' : workmode_info.url, 
+        //         'target' : 'subwindow', 
+        //     });
+        //     $('#workmode-form button').click(function(){
+        //         window.open(workmode_info.url, "subwindow", "width=400, height=160, top=690, left=1250");
+        //     });
+        
+        // // 作業モード遷移の条件を満たしていない場合
+        // } else {
+        //     // 作業モードダイアログの作成
+        //     let dlg = $('#workmode-dialog');
+        //     for (let message of workmode_info.dialog_data.messages){
+        //         var objP = $('<p>', {text : message});
+        //         dlg.append(objP);
+        //     }
+        //     let buttons = [];
+        //     // 一度button[]配列を経由してダイアログのbuttonsを入力しているため、先にfunctionが実行されてしまう
+        //     for (let button_info of workmode_info.dialog_data.buttons){
+        //         let button = {
+        //             [button_info.name] : function(){
+        //                 if (button_info.url === null) {
+        //                     dlg.dialog('close');
+        //                 } else {
+        //                     window.location.href = button_info.url;
+        //                 }
+        //             }
+        //         }
+        //         buttons.push(button);
+        //     }
+        //     dlg.dialog({
+        //         modal: true, 
+        //         autoOpen: false, 
+        //         title: '警告', 
+        //         buttons: buttons,
+        //     });
+
+        //     // ダイアログ表示処理
+        //     $('#workmode-form button').click(function(){
+        //         dlg.dialog('open');
+        //         // return false;
+        //     });
+        // }
+    });
+</script>
+{% endif %}
+{% endblock head %}
+
+{% block content %}
+    <h2>作業データの詳細</h2>
+    
+    {% if workmode_info.status == 'no_today_model' %}
+        <p>本日の作業データがまだ作成されていません。</p>
+        <form action="{% url 'todolist:workdatemodel_new' %}" method="get"><button type="submit">作業データを作成する</button></form>
+    {% else %}
+        <table>
+            <tr><th>作業日</th><td></td></tr>
+            <tr><th></th><td>{{ workdatemodel.work_date }}</td></tr>
+
+            <tr><th>平均計画実行時間割合</th><td></td></tr>
+            <tr><th></th><td>{{ workdatemodel.average_plan_excution_time_rate }}</td></tr>
+
+            <tr><th>1日の進捗率</th><td></td></tr>
+            <tr><th></th><td>{{ workdatemodel.todo_achievement_rate_in_a_day }}</td></tr>
+            
+            <tr><th>作業内容</th><td></td></tr>
+            {% for todomodel in todomodel_list %}
+                <div>
+                <tr>
+                    <th>{{ todomodel.order }}</th><td></td>
+                </tr>
+                <tr>
+                    <th>ToDo</th><td><a href="{% url 'todolist:todomodel_detail' pk=todomodel.id %}">{{ todomodel.title }}</a></td>
+                </tr>
+                <tr>
+                    <th>期限</th><td>{{ todomodel.limit_time }}</td>
+                </tr>
+                <tr>
+                    <th>目標時間</th><td>{{ todomodel.expected_time_min }}分</td>
+                </tr>
+                <tr>
+                    <th>実際の時間</th><td>{{ todomodel.actual_time_min.0 }}分{{ todomodel.actual_time_min.1 }}秒</td>
+                </tr>
+                <tr>
+                    <th>計画実行時間割合</th><td>{{ todomodel.plan_excution_time_rate }}</td>
+                </tr>
+                <tr>
+                    <th>ToDo達成割合</th><td>{{ todomodel.achievement_rate }}</td>
+                </tr>
+                </div>
+            {% empty %}
+                <tr><th></th><td>ToDoが登録されていません。</td></tr>
+            {% endfor %}
+        </table>
+        <table>
+            <tr>
+                <td>
+                    <form action="{% url 'todolist:workdatemodel_delete' slug=workdatemodel.slug %}" method="get"><button type="submit">削除</button></form>
+                </td>
+                <td>
+                    <form action="{% url 'todolist:workdatemodel_edit' slug=workdatemodel.slug %}" method="get"><button type="submit">編集</button></form>
+                </td>
+                {% if workdatemodel.work_date|is_today %}
+                <td>
+                    <form id ="workmode-form" method="get">
+                        <button type="button">作業開始</button>
+                    </form>
+                </td>
+                {% endif %}
+            </tr>
+        </table>
+
+        <div id="workmode-dialog">
+            {% for msg in workmode_info.dialog_data.messages %}
+            <p>{{ msg }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+{% endblock content %}

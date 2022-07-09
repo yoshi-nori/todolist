@@ -1,0 +1,80 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>Cafe - MENU</title>
+        <meta name="discription" content="メニュー">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="icon" type="image/png" href="{% static 'todolist/img/icon.png' %}">
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/ress/dist/ress.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'todolist/css/test.css' %}"/>
+    </head>
+    <body>
+        <div id="menu" class="big-bg">
+            <header class="page-header wrapper">
+                <h1><a href="{% url 'todolist:workdatemodel_list' %}"><img class="logo" src="{% static 'todolist/img/icon.png' %}" alt="アイコン"></a></h1>
+                <nav>
+                    <ul class="main-nav">
+                        <li><a href="{% url 'todolist:test' %}">テスト1</a></li>
+                        <li><a href="{% url 'todolist:test2' %}">テスト2</a></li>
+                        <li><a href="{% url 'todolist:test3' %}">テスト3</a></li>
+                        <li><a href="{% url 'todolist:test4' %}">テスト4</a></li>
+                    </ul>
+                </nav>
+            </header>
+            <div class="menu-content wrapper">
+                <h2 class="page-title">Menu</h2>
+                <p>
+                    この記事では、ホテルプロジェクトにおけるPMの意味、ホテルの企画・開発・建設プロジェクトでPM会社を活用するメリット、
+                    PM会社の特徴、実際にPM会社を活用した計画の一覧、PM会社を導入した事例の概要やポイントなどをまとめています。
+                </p>
+            </div>
+        </div><!-- /.menu-content -->
+        <div class="wrapper grid">
+            <div class="item big-box">
+                <img src="{% static 'todolist/img/cafe1.png' %}" alt="かふぇ１">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe2.png' %}" alt="かふぇ２">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe1.png' %}" alt="かふぇ１">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe2.png' %}" alt="かふぇ２">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe1.png' %}" alt="かふぇ１">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe2.png' %}" alt="かふぇ２">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe1.png' %}" alt="かふぇ１">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe2.png' %}" alt="かふぇ２">
+                <p>写真キャプション</p>
+            </div>
+            <div class="item">
+                <img src="{% static 'todolist/img/cafe1.png' %}" alt="かふぇ１">
+                <p>写真キャプション</p>
+            </div>
+        </div><!-- /.grid -->
+        <footer>
+            <div class="wrapper">
+                <p><small>Copyrights &copy; 2022 Test</small></p>
+            </div>
+        </footer>
+    </body>
+</html>

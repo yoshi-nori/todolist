@@ -1,0 +1,29 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/base_style.css' %}"/>
+    {% block head %}
+    {% endblock head %}
+</head>
+<body>
+    <header>
+        <h1>ToDoリスト</h1>
+        <p>{{ username }}</p>
+        <!--ユーザーネームも入れたい右寄せで-->
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock content %}
+    </main>
+    
+    <footer>
+        <span>
+            <p><a href="{% url 'todolist:index' %}">Home</a></p>
+            <p><a href="{% url 'todolist:todomodel_list' %}">ToDo一覧</a></p>
+        </span>
+    </footer>
+</body>
+</html>

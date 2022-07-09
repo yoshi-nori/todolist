@@ -1,0 +1,41 @@
+body {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+}
+main {
+    flex: 1;
+}
+
+header, footer {
+    text-align: center;
+    background-color: rgb(0, 204, 78);
+    opacity: 0.5;
+    color: white;
+    width: 100%;
+}
+header.project {
+    float: left;
+}
+header.authentication {
+    float: right;
+}
+footer {
+    text-align: center;
+}
+
+header>div>p>a:link {
+    color: white;
+}
+header>div>p>a:visited {
+    color: #ffff0080;
+}
+footer>p>a:link {
+    color: white;
+}
+footer>p>a:visited {
+    color: #ffff0080;
+}

@@ -1,0 +1,40 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+    <head>
+        <meta charset="utf-8">
+        <title>テスト</title>
+        <meta name="discription" content="テスト中">
+        <link rel="icon" type="image/png" href="{% static 'todolist/img/icon.png' %}">
+        <meta property="og:url" content="{% url 'todolist:test' %}">
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="Cafe - Home">
+        <meta property="og:description" content="ヤッホー">
+        <meta property="og:image" content="{% static 'todolist/img/background2.png' %}">
+
+        <!-- CSS -->
+        <link rel="stylesheet" type="text/css" href="https://unpkg.com/ress/dist/ress.min.css"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'todolist/css/test.css' %}"/>
+    </head>
+    <body>
+        <div id="home" class="big-bg">
+            <header class="page-header wrapper">
+                <h1><a href="{% url 'todolist:workdatemodel_list' %}"><img class="logo" src="{% static 'todolist/img/icon.png' %}" alt="アイコン"></a></h1>
+                <nav>
+                    <ul class="main-nav">
+                        <li><a href="{% url 'todolist:test' %}">テスト1</a></li>
+                        <li><a href="{% url 'todolist:test2' %}">テスト2</a></li>
+                        <li><a href="{% url 'todolist:test3' %}">テスト3</a></li>
+                        <li><a href="{% url 'todolist:test4' %}">テスト4</a></li>
+                    </ul>
+                </nav>
+            </header>
+
+            <div class="home-content">
+                <h2 class="page-title">We'll Make your day</h2>
+                <p>コメント</p>
+                <a class="button" href="{% url 'todolist:workdatemodel_list' %}">メニュー</a>
+            </div>
+        </div>
+    </body>
+</html>
