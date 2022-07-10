@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 import dj_database_url
 
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 # BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -26,16 +27,14 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
+
 # サービスを提供するドメイン名を制限（ホワイトリスト）
 ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
-# 利用するアプリケーションの一覧をここに記述する．
-# 利用するアプリケーションのメタデータをここに記録してアプリを有効化してる
-# Djangoにアプリを認識させる
-# migrationsでマイグレーションファイル（データベース構成のバージョン管理）を作成する際などに一緒にアプリの状態も管理するぽい
+# ここに設定した名前とモデル、マイグレーションファイルがDBに紐づけられて登録されている。
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -48,13 +47,13 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # 追加
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware', # 追加
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -75,12 +74,12 @@ TEMPLATES = [
     },
 ]
 
+
 # テンプレートを継承して利用する場合，プロジェクト直下のstaticファイルを認識するための設定（追加で設定した）
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     ]
 
-# エントリポイント．Webサーバとこのプロジェクト（アプリケーション）を仲介するプロトコル
 WSGI_APPLICATION = 'mysite.wsgi.application'
 
 
@@ -125,10 +124,8 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-# LANGUAGE_CODE = 'en-us'
 LANGUAGE_CODE = 'ja'
 
-# TIME_ZONE = 'UTC'
 TIME_ZONE = 'Asia/Tokyo'
 
 # 多言語化機能を有効にするか否かを指定
@@ -147,6 +144,8 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # 追加
+
+# STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage' # 追加
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field

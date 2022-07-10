@@ -16,6 +16,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
+# """
+# Temporary debug function in production environment.
+# Comment out this part if you don't use debug function
+# """
+# from todolist import views
+# handler500 = views.my_customized_server_error
+# # End of debug function
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('todolist/', include('todolist.urls')),

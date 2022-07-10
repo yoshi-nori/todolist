@@ -3,7 +3,7 @@
 {% load todolist_extras %}
 
 {% block head %}
-<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/form_style.css' %}">
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.css">
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.css">
 <title>ToDoリスト ToDoの{% if view|is_update_or_create_view %}更新{% else %}作成{% endif %}</title>

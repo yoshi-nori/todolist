@@ -14,6 +14,21 @@ from datetime import datetime, timezone
 from urllib.parse import urlencode
 
 
+# """
+# Temporary debug function in production environment.
+# Comment out this part if you don't use debug function
+# """
+# from django.views.decorators.csrf import requires_csrf_token
+# from django.http import HttpResponseServerError
+#
+# @requires_csrf_token
+# def my_customized_server_error(request, template_name='500.html'):
+#     import sys
+#     from django.views import debug
+#     error_html = debug.technical_500_response(request, *sys.exc_info()).content
+#     return HttpResponseServerError(error_html)
+# # End of debug function part
+
 
 def test(request):
     return render(request, 'todolist/test.html')

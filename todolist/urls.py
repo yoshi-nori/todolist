@@ -6,14 +6,13 @@ from . import views
 app_name = 'todolist'
 
 
-
 urlpatterns = [
     path('test/' , views.test, name='test'), 
     path('test2/', views.test2, name='test2'), 
     path('test3/', views.test3, name="test3"), 
     path('test4/', views.test4, name="test4"), 
     path('index/',                                      views.index,                        name='index'), 
-    path('tasks/',                                      views.TodoListView.as_view(),       name='todomodel_list'),    # クエリパラメーターでページ数を指定
+    path('tasks/',                                      views.TodoListView.as_view(),       name='todomodel_list'),
     path('tasks/<int:pk>/',                             views.TodoDetailView.as_view(),     name='todomodel_detail'), 
     path('tasks/new/',                                  views.TodoCreateView.as_view(),     name='todomodel_new'), 
     path('tasks/<int:pk>/edit/',                        views.TodoUpdateView.as_view(),     name='todomodel_edit'), 

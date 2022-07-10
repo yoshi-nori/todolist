@@ -4,6 +4,7 @@
 
 {% block head %}
 <link rel="stylesheet" type="text/css" href="{% static 'todolist/css/wform_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.css">
 <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"/>
 <title>作業データの{% if view|is_update_or_create_view %}更新{% else %}作成{% endif %}</title>
