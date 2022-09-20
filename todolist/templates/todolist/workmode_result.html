@@ -1,0 +1,64 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+{% load todolist_extras %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<title>本日の作業結果</title>
+{% endblock head %}
+
+{% block content %}
+    <div>
+        <h2>これまでの総合的評価</h2>
+        <table>
+            <tr><th>平均計画実行時間割合</th><td></td></tr>
+            <tr><th></th><td>{{ average_plan_excution_time_rate }}</td></tr>
+            
+            <tr><th>総合的なToDo達成率</th><td></td></tr>
+            <tr><th></th><td>{{ whole_todo_achievement_rate }}</td></tr>
+        </table>
+    </div>
+
+    <div>
+        <h2>本日の作業結果</h2>
+
+        <table>
+            <tr><th>作業日</th><td></td></tr>
+            <tr><th></th><td>{{ workdatemodel.work_date }}</td></tr>
+    
+            <tr><th>平均計画実行時間割合</th><td></td></tr>
+            <tr><th></th><td>{{ workdatemodel.average_plan_excution_time_rate }}</td></tr>
+    
+            <tr><th>1日の進捗率</th><td></td></tr>
+            <tr><th></th><td>{{ workdatemodel.todo_achievement_rate_in_a_day }}</td></tr>
+            
+            <tr><th>作業内容</th><td></td></tr>
+            {% for todomodel in todomodel_list %}
+                <div>
+                <tr>
+                    <th>{{ todomodel.order }}</th><td></td>
+                </tr>
+                <tr>
+                    <th>ToDo</th><td><a href="{% url 'todolist:todomodel_detail' todomodel.id %}">{{ todomodel.title }}</a></td>
+                </tr>
+                <tr>
+                    <th>期限</th><td>{{ todomodel.limit_time }}</td>
+                </tr>
+                <tr>
+                    <th>目標時間</th><td>{{ todomodel.expected_time_min }}分</td>
+                </tr>
+                <tr>
+                    <th>実際の時間</th><td>{{ todomodel.actual_time_min.0 }}分 {{ todomodel.actual_time_min.1 }}秒</td>
+                </tr>
+                <tr>
+                    <th>計画実行時間割合</th><td>{{ todomodel.plan_excution_time_rate }}</td>
+                </tr>
+                <tr>
+                    <th>ToDo達成割合</th><td>{{ todomodel.achievement_rate }}%</td>
+                </tr>
+                </div>
+            {% endfor %}
+        </table>
+    </div>
+    <form action="{% url 'todolist:workdatemodel_list' %}" method="get"><button>作業データ一覧に戻る</button></form>
+{% endblock content %}

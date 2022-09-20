@@ -1,0 +1,142 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+{% load todolist_extras %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/wform_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.css">
+<link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"/>
+<title>作業データの{% if view|is_update_view %}更新{% else %}作成{% endif %}</title>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'todolist/js/datedropper-jquery.js' %}"></script>
+{{ todo_select_list|json_script:"todo_select_list_json" }}
+<script type="text/javascript">
+    $(function(){
+        {% if view|is_update_view %}
+        // 作業日が変更された場合のダイアログ作成、表示処理
+        var dlg = $('#work_date_changed-dialog');
+        document.getElementById('btn-submit').type = "button";
+        var workDateInitial = $('#id_work_date').val();
+        dlg.dialog({
+            modal: true,
+            autoOpen: false,
+            title: '警告',
+            buttons: {
+                '保存': function(){
+                    $('#formset').submit();
+                }, 
+                'キャンセル': function(){
+                    $(this).dialog('close');
+                }
+            }
+        });
+        $('#btn-submit').click(function(){
+            if (workDateInitial === $('#id_work_date').val()) {
+                $('#formset').submit();
+            } else {
+                dlg.dialog('open');
+            }
+        });
+        {% endif %}
+
+        // カレンダー入力の作成
+        $('#id_work_date').dateDropper({
+            large : true, 
+            largeDefault : true, 
+            defaultDate : $('#id_work_date').val(), 
+        });
+
+        // Formsetの動的追加・削除処理
+        var formCount = Number($('#id_form-TOTAL_FORMS').val());
+        var btnClone = $('#btn-clone');
+        var btnRemove = $('#btn-remove');
+
+        btnClone.click(function() {
+            var newForm = '{{ formset.empty_form|escapejs }}'.replace(/__prefix__/g, formCount);
+            var orderNum = '<tr><th>' + (formCount + 1) + '<td></td></th></tr>'
+            newForm = '<table class="sub-form">' + orderNum + newForm + '</table>'
+
+            $('#forms').append(newForm);
+            formCount++;
+
+            $('#id_form-TOTAL_FORMS').val(formCount);
+            if (formCount >= 1) {
+                $(btnRemove).show();
+            }
+        });
+
+        btnRemove.click(function() {
+            $('.sub-form').last().remove();
+            formCount--;
+            $('#id_form-TOTAL_FORMS').val(formCount);
+
+            if (formCount === 0) {
+                $(btnRemove).hide();
+            }
+        });
+
+        // ToDoの変更に応じて目標時間を動的に変更する処理
+        var todoSelectList = document.getElementById('todo_select_list_json').textContent
+        todoSelectList = JSON.parse(todoSelectList);
+
+        $(document).on('change', '.form-title', function(){
+            var selectedId = Number($(this).val());
+            var expectedTimeInput = $(this).parents('table').find('.form-expected_time');
+            if (selectedId === 0) {
+                expectedTimeInput.val(0);
+            }
+            // JSONのデータ構造を{"8(id番号)" : {"title" : ○○, "expected_time" : ○○, ...}, "9" : {...}, ...}にすればO(1)で処理可能
+            for (let i = 0; i < todoSelectList.length; i++){
+                if (selectedId === todoSelectList[i].id) {
+                    expectedTimeInput.val(todoSelectList[i].expectedTimeMin);
+                    break;
+                }
+            }
+        });
+    });
+</script>
+{% endblock head %}
+
+{% block content %}
+<h2>作業データの{% if view|is_update_view %}更新{% else %}作成{% endif %}</h2>
+<p>以下のフォームを入力してください。</p>
+
+<form id="formset" method="post">
+    {% csrf_token %}
+    <table>
+        {{ form.as_table }}
+    </table>
+
+    {{ formset.non_form_errors }}
+    {% if not object.is_finished %}
+    <table>
+        <tr>
+            <td><button type="button" id="btn-clone">ToDoの追加</button></td>
+            <td><button type="button" id="btn-remove">ToDoの削除</button></td>
+        </tr>
+    </table>
+    {% endif %}
+
+    {{ formset.management_form }}
+    <div id="forms">
+        {% for subform in formset %}
+            <table class="sub-form">
+                <tr><th>{{ forloop.counter }}</th><td></td></tr>
+                {% if object.is_finished %}
+                <tr><th>ToDo</th><td>{{ subform.instance.title }}</td></tr>
+                {% endif %}
+                {{ subform.as_table }}
+            </table>
+        {% endfor %}
+    </div>
+
+    <button type="submit" id="btn-submit">{% if view|is_update_view %}更新{% else %}作成{% endif %}</button>
+</form>
+
+<div id="work_date_changed-dialog" class="dialog">
+    <p>作業日が変更されました。</p>
+    <p>このまま保存しますか？</p>
+</div>
+{% endblock content %}

@@ -1,0 +1,74 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<title>ToDoリスト</title>
+{% endblock head %}
+
+{% block content %}
+    <h2>ToDoの一覧</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'todolist success' %}
+                <p>{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    
+    <td><form action="{% url 'todolist:todomodel_new' %}" method="get"><button type="submit">ToDoを追加</button></form></td>
+    <table>
+        <thead>
+            <tr>
+                <th>ToDo</th>
+                <th>期限</th>
+                <th>作業予定日</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in object_list %}
+            <tr>
+                <td><a href="{{ object.id }}/">{{ object.title }}</a></td>
+                <td>{{ object.limit_time }}</td>
+                <td>{{ object.work_date_model.work_date }}</td>
+                {% if not object.is_completed %}
+                <td><form action="{% url 'todolist:todomodel_confirm_delete' object.id %}" method="get"><button type="submit">削除</button></form></td>
+                <td><form action="{% url 'todolist:todomodel_edit' pk=object.id %}" method="get"><button type="submit">編集</button></form></td>
+                {% endif %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% if page_obj.has_other_pages %}
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            {% if page_obj.has_previous %}
+                <li><a class="page-link text-primary d-inline-block" href="../{{ page_obj.previous_page_number }}/"><<</a></li>
+            {% else %}
+                <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#"><<</div></li>
+            {% endif %}
+
+            {% for page_num in page_obj.paginator.page_range %}
+                {% if page_num %}
+                    {% if page_num == pages.number %}
+                        <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">{{ page_num }}</div></li>
+                    {% else %}
+                        <li><a class="page-link text-primary d-inline-block" href="../{{ page_num }}/">{{ page_num }}</a></li>
+                    {% endif %}
+                {% else %}
+                    <li class="disabled"><a class="page-link text-secondary d-inline-block text-muted" href="#">・・・</a></li>
+                {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+                <li><a class="page-link text-primary d-inline-block" href="../{{ page_obj.next_page_number }}/">>></a></li>
+            {% else %}
+                <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">>></div></li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% endblock content %}

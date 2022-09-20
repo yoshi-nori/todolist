@@ -1,0 +1,143 @@
+{% load static %}
+{% load todolist_extras %}
+
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="作業効率を可視化することで、日々の作業に対するモチベーションと作業効率を高めていけるタスク管理型のWebアプリケーションです。">
+  <meta property="og:url" content="{% url 'todolist:index' %}">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="タスク管理アプリ">
+  <meta property="og:description" content="作業効率を可視化することで、日々の作業に対するモチベーションと作業効率を高めていけるタスク管理型のWebアプリケーションです。">
+  <meta property="og:image" content="{% static 'todolist/img/icon.png' %}">
+
+  <link rel="icon" type="image/png" href="{% static 'todolist/img/icon.png' %}"/>
+  <!-- <link rel="stylesheet" type="text/css" href="https://unpkg.com/ress/dist/ress.min.css"/> -->
+  <link rel="stylesheet" type="text/css" href="{% static 'todolist/css/base.css' %}"/>
+
+  {% block index_head %}
+  {% if not view|is_cud_view %}
+  <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"/>
+  <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+  {{ workmode_info|json_script:"workmode_info" }}
+  <script type="text/javascript">
+    $(function() {
+        $('body').attr('onload', function(){
+            window.name = "parent-window";
+        });
+
+        var workmode_info = document.getElementById('workmode_info').textContent;
+        workmode_info = JSON.parse(workmode_info);
+
+        // 作業モード遷移の条件を満たしている場合
+        if (workmode_info.status === 'available') {
+            // 作業モード遷移処理
+            $('#workmode-form').attr({
+                'action' : workmode_info.url, 
+                'target' : 'subwindow', 
+            });
+            $('#workmode-form button').click(function(){
+                window.open(workmode_info.url, "subwindow", "width=400, height=180, top=680, left=1248");
+            });
+        
+        // 作業モード遷移の条件を満たしていない場合
+        } else {
+            let dlg = $('#workmode-dialog')
+            let buttons = new Object();
+            for (let button_info of workmode_info.dialog_data.buttons){
+                buttons[button_info.name] = function(){
+                    if (button_info.url === null) {
+                        dlg.dialog('close');
+                    } else {
+                        window.location.href = button_info.url;
+                    }
+                }
+            }
+            dlg.dialog({
+                modal: true, 
+                autoOpen: false, 
+                title: '警告', 
+                buttons: buttons,
+            });
+
+            // ダイアログ表示処理
+            $('#workmode-form button').click(function(){
+                dlg.dialog('open');
+            });
+
+            if (workmode_info.status === "no_today_model") {
+                $('#today-model').attr("href", "#");
+                $('#today-model').click(function(){
+                    dlg.dialog('open');
+                });
+            }
+        }
+    });
+  </script>
+  {% endif %}
+  {% endblock index_head %}
+  {% block head %}
+  {% endblock head %}
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <div class="wrapper">
+        <a class="header-title" href="{% url 'todolist:index' %}">
+          <img class="logo" src="{% static 'todolist/img/icon.png' %}" alt="アイコン">
+          <h1>タスク管理アプリ</h1>
+        </a>
+        <div class="account-info">
+          {% if user.is_authenticated %}
+            {% block top_page_user_content %}
+            <ul class="user-nav">
+              <li><a href="#">{{ user.username }}</a></li>
+              <li><a href="{% url 'account_logout' %}">ログアウト</a></li>
+            </ul>
+            {% endblock top_page_user_content %}
+          {% else %}
+            <a class="button" href="{% url 'account_login' %}">ログイン</a>
+            <a class="account-registration button" href="{% url 'account_signup' %}">会員登録</a>
+          {% endif %}
+        </div>
+      </div>
+    </header>
+    {% block index_content %}
+      <div class="main all-content wrapper">
+        <main class="main-content">
+          {% block content %}
+          {% endblock content %}
+        </main>
+        <aside class="aside-content">
+            <div class="side-item-fixed">
+                <h3 class="sub-title">メニュー</h3>
+                <ul class="sub-menu">
+                    <li><a href="{% url 'todolist:home' %}">ホーム</a></li>
+                    <li><a href="{% url 'todolist:todomodel_list' %}">ToDo一覧</a></li>
+                    <li><a href="{% url 'todolist:workdatemodel_list' %}">作業データ一覧</a></li>
+                    <li><a href="#">評価</a></li>
+                </ul>
+                {% if not view|is_cud_view %}
+                <div class="a-block-center">
+                  <form id="workmode-form" class="workmode" method="get">
+                      <button class="workmode-butto button" type="button">本日の作業開始</button>
+                  </form>
+                </div>
+                {% endif %}
+            </div>
+        </aside>
+      </div>
+    {% endblock index_content %}
+    <footer>
+      <p><small>Copyrights &copy; 2022 Totaro All Rights Reserved.</small></p>
+    </footer>
+  </div>
+  <div id="workmode-dialog" class="dialog">
+    {% for message in workmode_info.dialog_data.messages %}
+    <p>{{ message }}</p>
+    {% endfor %}
+  </div>
+</body>
+</html>

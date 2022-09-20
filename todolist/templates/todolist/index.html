@@ -1,0 +1,80 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+
+{% block index_head %}
+{% endblock index_head %}
+{% block head %}
+    <title>タスク管理アプリ</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'todolist/css/index.css' %}">
+{% endblock %}
+
+{% block top_page_user_content %}
+<ul class="user-nav">
+    <li><a href="{% url 'todolist:home' %}">マイページへ</a></li>
+    <li><a href="{% url 'account_logout' %}">ログアウト</a></li>
+</ul>
+{% endblock %}
+
+{% block index_content %}
+    <main class="main">
+        <section class="section-intro big-background">
+            <div class="section-content">
+                <div class="intro-description">
+                    <div class="overview-centered">
+                        <h2 class="page-title">作業効率への意識を高める</h2>
+                        <p>
+                            日々の作業効率を可視化することで<br>
+                            作業効率を高めることに特化した<br>
+                            タスク管理型Webアプリケーションです。<br>
+                        </p>
+                        <a href="{% url 'account_signup' %}">会員登録して利用する。</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-demo big-background">   
+            <div class="section-content">
+                <div class="demo-img">
+                    <img src="{% static 'todolist/img/demo_countdown.png' %}" alt="DEMO">
+                </div>
+                <div class="demo-description">
+                    <div class="overview-centered">
+                        <h2 class="page-title">カウントダウン機能</h2>
+                        <p>
+                            登録した各タスクに対して、<br>
+                            事前に設定した目標時間で<br>
+                            カウントダウンすることで、<br>
+                            作業中の時間への意識を高めます。<br>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section-demo section-visualization big-background ">   
+            <div class="section-content">
+                <div class="demo-description">
+                    <div class="overview-centered">
+                        <h2 class="page-title">日々の作業効率を可視化</h2>
+                        <p>
+                            作業結果はデータとして蓄積していき、<br>
+                            タスクの種類や期間ごとの作業効率を<br>
+                            可視化することができます。<br>
+                            （準備中）
+                        </p>
+                    </div>
+                </div>
+                <div class="demo-img">
+                    <img src="#" alt="DEMO">
+                </div>
+            </div>
+        </section>
+        <section class="section-registration">
+            <p>さあ、始めましょう。</p>
+            <div>
+                <a class="account-registration button" href="{% url 'account_signup' %}">会員登録</a>
+            </div>
+        </section>
+    </main>
+{% endblock index_content %}

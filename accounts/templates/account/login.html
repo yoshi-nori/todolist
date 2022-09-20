@@ -1,0 +1,58 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/auth.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="a-block-center">
+  <a class="header-title" href="{% url 'todolist:index' %}">
+    <img class="logo" src="{% static 'accounts/img/icon.png' %}" alt="アイコン">
+    <h1>タスク管理アプリ</h1>
+  </a>
+</div>
+
+<div class="auth-main">
+  {% if messages %}
+    <div class="action-messages">
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <div class="a-box">
+    <div class="auth-title">
+      <h2>{% trans "Sign In" %}</h2>
+    </div>
+
+    <form class="auth-form" method="POST" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      <table>
+        {{ form.as_table }}
+      </table>
+      {% if redirect_field_value %}
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+      {% endif %}
+      <div class="a-block-center">
+        <button class="primaryAction wide-button" type="submit">{% trans "Sign In" %}</button>
+      </div>
+    </form>
+
+    <!-- <a class="secondaryAction" href="{% url 'account_reset_password' %}">
+      <span>{% trans "Forgot Password?" %}</span>
+    </a> -->
+  </div>
+  
+  <div class="sub-center-line">
+    <h5>アカウントをまだお持ちでないですか？</h5>
+  </div>
+  <a class="subAction wide-button" href="{{ signup_url }}">アカウントを作成する</a>
+</div>
+{% endblock %}

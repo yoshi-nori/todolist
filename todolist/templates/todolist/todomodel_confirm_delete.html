@@ -1,0 +1,29 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<title>ToDoリスト ToDoの削除</title>
+{% endblock head %}
+
+{% block content %}
+<h2>ToDoの削除</h2>
+<p>以下の内容を削除しますか？</p>
+<table>
+    <tr>
+        <form method="post">{% csrf_token %}<input type="submit" value="削除する"></form>
+        <form action="{% url 'todolist:todomodel_list' %}" method="get"><button type="submit">キャンセル</button></form>
+    </tr>
+</table>
+
+
+<table>
+    <tr><th><b>ToDo: </b></th><td>{{ object.title }}</td></tr>
+    <tr><th><b>期限: </b></th><td>{{ object.limit_time }}</td></tr>
+    <tr><th><b>作業予定日: </b></th><td>{{ object.work_date }}</td></tr>
+    <tr><th>ToDo実行状況: </th><td>{{ object.achievement_rate }} %</td></tr>
+    <tr><th>目標時間: </th><td>{{ object.expected_time_min }}分</td></tr>
+    <tr><th>実際の時間: </th><td>{{ object.actual_time_min.0 }}分{{ object.actual_time_min.1 }}秒</td></tr>
+    <tr><th>計画実行時間割合: </th><td>{{ object.plan_excution_time_rate }}</td></tr>
+</table>
+{% endblock content %}

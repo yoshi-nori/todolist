@@ -1,0 +1,92 @@
+{% load static %}
+<!doctype html>
+<html lang="ja">
+<head>
+    <title>作業モード</title>
+    <meta charset="utf-8">
+    <meta name="description" content="日々の計画作成と計画実行を通して、コンピューターが目標達成度を可視化することで、より現実的な目標を立てることを支援するWebアプリケーションです。">
+    <meta property="og:url" content="{% url 'todolist:index' %}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="適正計画支援アプリ">
+    <meta property="og:description" content="日々の計画作成と計画実行を通して、コンピューターが目標達成度を可視化することで、より現実的な目標を立てることを支援するWebアプリケーションです。">
+    <meta property="og:image" content="{% static 'todolist/img/icon.png' }">
+  
+    <link rel="icon" type="image/png" href="{% static 'todolist/img/icon.png' %}"/>
+    <link rel="stylesheet" type="text/css" href="https://unpkg.com/ress/dist/ress.min.css"/>
+    <link rel="stylesheet" type="text/css" href="{% static 'todolist/css/workmode_style.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.13.1/themes/smoothness/jquery-ui.css"/>
+    <script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" crossorigin="anonymous"></script>
+    {{ todo_js|json_script:"todo-info" }}
+    <script src="{% static 'todolist/js/workmode.js' %}" defer></script>
+</head>
+<body>
+    <div class="a-page">
+        <div class="container workmode">
+            <!-- カウントダウン -->
+            <div class="countdown">
+                <h1 id="time-left">00:00:00</h1>
+            </div>
+    
+            <!-- タスク内容 -->
+            <div class="task-content">
+                <div class="task-item">
+                    <span class="task-order">{{ todo_py.order }}.</span>
+                    <div class="task-title">
+                        <span>{{ todo_py.title }}</span>
+                    </div>
+                    <span class="task-expected_time">{{ todo_py.expected_time_min }}分</span>
+                </div>
+            </div>
+    
+            <!-- ボタン -->
+            <div class="row-container">
+                <!-- BACKボタン -->
+                <div class="row-item">
+                    <form id="back-form" action="{% url 'todolist:workmode' slug=workdatemodel.slug order=todo_py.back_order %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_table }}
+                        <button class="button" type="button">Back</button>
+                    </form>
+                </div>
+    
+                <!-- PAUSE/RESTARTボタン -->
+                <div class="row-item">
+                    <button id="pause-restart-btn" class="button" type="button">Pause</button>
+                </div>
+    
+                <!-- DROPボタン -->
+                <div class="row-item">
+                    <form id="drop-form" action="{% url 'todolist:workmode' slug=workdatemodel.slug order=todo_py.order %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_table }}
+                        <button class="button" type="button">Drop</button>
+                    </form>
+                </div>
+    
+                <!-- NEXTボタン -->
+                <div class="row-item">
+                    <form id="next-form" action="{% url 'todolist:workmode' slug=workdatemodel.slug order=todo_py.next_order %}" method="post">
+                        {% csrf_token %}
+                        {{ form.as_table }}
+                        <button class="button" type="button">Next</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ダイアログ -->
+    <div id="start-dialog" class="dialog">
+        <p>作業を開始しますか？</p>
+    </div>
+    <div id="back-dialog" class="dialog">
+        <p>前のToDoに戻りますか？</p>
+        <p>※前のToDoは未完了の状態に戻ります。</p>
+    </div>
+    <div id="drop-dialog" class="dialog">
+        <p>作業を中断しますか？</p>
+        <p>※現在作業中のToDo時間情報はリセットされます。</p>
+    </div>
+</body>
+</html>

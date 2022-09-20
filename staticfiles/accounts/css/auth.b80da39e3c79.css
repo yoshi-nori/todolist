@@ -1,0 +1,166 @@
+@charset "UTF-8";
+
+/* 共通部分
+-------------------------------------*/
+html {
+    font-size: 100%;
+}
+body {
+    /* font-family: "afasda"; */
+    line-height: 1.7;
+    color: #1d1d1f;
+}
+a {
+    text-decoration: none;
+}
+img {
+    max-width: 100%;
+}
+.a-block-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.header-title {
+    display: flex;
+    align-items: center;
+    color: #5a5a5a;
+}
+.header-title h1 {
+    font-size: 1.5rem;
+}
+.logo {
+    width: 50px;
+    margin-right: 0.75rem;
+}
+
+.auth-main {
+    margin-top: 1rem;
+    width: 480px;
+    margin: auto;
+}
+.action-messages {
+    width: 100%;
+}
+.action-messages li {
+    list-style-type: none;
+    color: #111;
+    text-align: center;
+}
+.a-box {
+    width: 100%;
+    padding: 0.5rem 1.5rem 1rem;
+    margin-bottom: 2rem;
+    border: 2px solid #dedede;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+.auth-title {
+    text-align: center;
+    padding: 0.7rem 0;
+}
+.auth-title h2 {
+    margin: 0;
+}
+.auth-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.auth-form .a-block-center {
+    width: 100%;
+}
+.wide-button {
+    font-size: 1rem;
+    width: 100%;
+    margin: 1rem auto 1rem;
+    padding: 0.2rem;
+    color: #111;
+    background-color: #eff0f3;
+    border-radius: 3px;
+    border: 0.5px solid #a2a6ac;
+}
+.wide-button:hover {
+    background-color:  #e7e9ec;
+    border-color: #8d9096;
+}
+.primaryAction {
+    background-color: #9ede95;
+    border-color: #4f6f4b;
+}
+.primaryAction.wide-button:hover {
+    background-color: #7ed371;
+    border-color: #3f593c;
+}
+.secondaryAction {
+    color: #0066c0;
+}
+.secondaryAction::before {
+    width: 0;
+    height: 0;
+    content: "";
+    display: inline-block;
+    border: 6px solid transparent;
+    border-left-color: #1d1d1d;
+  }
+.secondaryAction:hover {
+  color: #c45500;
+  text-decoration: underline;
+}
+.sub-center-line {
+    text-align: center;
+    position: relative;
+    top: 2px;
+    padding-top: 1px;
+    margin-bottom: 14px;
+    line-height: 0;
+    box-sizing: border-box;
+}
+.sub-center-line h5 {
+    line-height: 1;
+    font-size: 12px;
+    color: #767676;
+    font-weight: 400;
+    z-index: 2;
+    position: relative;
+    display: inline-block;
+    background-color: #fff;
+    padding: 0 8px 0 7px;
+    margin: 0;  
+}
+.sub-center-line::after {
+    content: "";
+    width: 100%;
+    background-color: transparent;
+    display: block;
+    height: 1px;
+    border-top: 1px solid #e7e7e7;
+    position: absolute;
+    top: 50%;
+    margin-top: -1px;
+    z-index: 1;
+}
+.subAction {
+    display: block;
+    text-align: center;
+    box-sizing: border-box;
+}
+.only-text {
+    text-align: center;
+}
+.unit-text {
+  margin-bottom: 1rem;
+}
+.unit-text p {
+  line-height: 1.25;
+  margin: 0 auto 0.75rem;
+}
+.auth-main-wide {
+    margin-top: 1rem;
+    width: 480px;
+    margin: auto;
+}
+.unit-text-center {
+    margin-bottom: 1rem;
+    text-align: center;
+}

@@ -1,0 +1,137 @@
+@charset "UTF-8";
+
+
+/* HEADER
+-------------------------------------------------------------------*/
+.account-info a {
+    margin-left: 1rem;
+}
+
+/* INDEX
+ ---------------------------------------------------------------------------*/
+ /* 大きい背景 */
+ .big-background {
+    background-size: cover;
+    background-position: center top;
+    background-repeat: no-repeat;
+ }
+/* セクション共通部分 */
+.section-content {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1080px;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+ }
+  /* プロダクト概要セクション */
+.section-intro {
+    background-image: url(../img/background_overview.jpg);
+    height: 90vh;
+}
+ /* 概要説明 */
+.intro-description {
+    padding: 20vh 0;
+    margin-left: auto;
+    margin-right: auto;
+    flex-basis: 75%;
+    width: 75%;
+}
+/* 見出しと説明 */
+.overview-centered {
+    font-size: 1.5rem;
+    text-align: center;
+}
+.overview-centered h2 {
+    font-size: 2.5rem;
+    font-weight: bold;
+    padding: 0 0 2rem;
+    white-space: nowrap;
+}
+.overview-centered p {
+    margin-bottom: 0.75rem;
+}
+.overview-centered a {
+    color: #3998db;
+}
+.overview-centered a:hover {
+    text-decoration: underline;
+}
+.page-title {
+    font-size: 4rem;
+    font-weight: normal;
+}
+/* プロダクトデモセクション */
+.section-demo {
+    background-color: #00cc4e, linear-gradient(#00cc4e, #FFF);
+    background-blend-mode: luminosity;
+}
+.section-demo .section-content {
+    padding: 10% 0;
+ }
+ /* デモ説明 */
+.demo-description {
+    margin-left: auto;
+    margin-right: auto;
+    flex-basis: 40%;
+    max-width: 40%;
+}
+/* デモ画像 */
+.demo-img {
+    flex-basis: 54%;
+    max-width: 54%;
+    /* margin-left: 6%; */
+}
+.demo-img img {
+    max-width: 100%;
+    vertical-align: bottom;
+    object-fit: contain;
+}
+
+.section-visualization {
+    background-color:  #e6e6e6;
+}
+
+/* 会員登録誘導セクション
+------------------------------------------------------------ */
+.section-registration {
+    text-align: center;
+    padding: 7% 0 10%;
+}
+.section-registration p {
+    font-size: 2rem;
+}
+/* 会員登録ボタン（大きい） */
+.section-registration .button {
+    display: block;
+    font-size: 1.75rem;
+    border-radius: 3rem;
+    padding: 1rem 2rem;
+}
+.section-registration .button:hover {
+    transform: scale(0.95);
+    margin-top: 0;
+}
+.section-registration div {
+    width: fit-content;
+    margin:3rem auto 0;
+}
+
+/* 画面中間サイズ版（途中）
+----------------------------------------------------------------- */
+@media (max-width: 1100px) {
+    .section-content {
+        flex-direction: column;
+    }
+    .demo-img {
+        margin-left: 0;
+        margin-top: 2rem;
+    }
+}
+
+/* TODO */
+/* モバイル版
+--------------------------------------------------------------------------- */

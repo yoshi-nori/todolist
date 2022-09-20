@@ -1,0 +1,45 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<title>ToDoリスト/{{ object.title }}</title>
+{% endblock head %}
+
+{% block content %}
+<h2>ToDoの詳細</h2>
+<table>
+    <thead>
+        <tr>
+            <th>ToDo</th>
+            <th>期限</th>
+            <th>作業予定日</th>
+            <th>ToDo実行状況</th>
+            <th>目標時間</th>
+            <th>実際の時間</th>
+            <th>計画実行時間割合</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ object.title }}</td>
+            <td>{{ object.limit_time }}</td>
+            <td>
+                {% if object.work_date_model is not None %}
+                <a href="{% url 'todolist:workdatemodel_detail' slug=object.work_date_model.slug %}">{{ object.work_date_model.work_date }}</a>
+                {% endif %}
+            </td>
+            <td>{{ object.achievement_rate }} %</td>
+            <td>{{ object.expected_time_min }}分</td>
+            <td>{{ object.actual_time_min.0 }}分{{ object.actual_time_min.1 }}秒</td>
+            <td>{{ object.plan_excution_time_rate }}</td>
+        </tr>
+    </tbody>
+</table>
+<table>
+    <tr>
+        <td><form action="{% url 'todolist:todomodel_edit' object.id %}" method="get"><button type="submit">編集</button></form></td>
+        <td><form action="{% url 'todolist:todomodel_confirm_delete' object.id %}" method="get"><button type="submit">削除</button></form></td>
+    </tr>
+</table>
+{% endblock content %}

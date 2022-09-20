@@ -1,0 +1,27 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<title>作業結果の記入</title>
+{% endblock head %}
+
+{% block content %}
+    <h2>作業結果の記入</h2>
+    <p>作業結果を評価するために以下の項目を記入してください。</p>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ formset.non_form_errors }}
+
+        {{ formset.management_form }}
+        {% for subform in formset %}
+        <table>
+            <tr><th>{{ subform.instance.order }}</th><td></td></tr>
+            <tr><th>ToDo</th><td>{{ subform.instance.title }}</td></tr>
+            {{ subform.as_table }}
+        </table>
+        {% endfor %}
+        <button type="submit">送信</button>
+    </form>
+{% endblock content %}

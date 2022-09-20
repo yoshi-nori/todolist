@@ -1,0 +1,29 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+{% load todolist_extras %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/datedropper/2.0/datedropper.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.css">
+<title>ToDoリスト ToDoの{% if view|is_update_view %}更新{% else %}作成{% endif %}</title>
+<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{% static 'todolist/js/datedropper-jquery.js' %}"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/timedropper/1.0/timedropper.min.js"></script>
+<script type="text/javascript" src="{% static 'todolist/js/datetime_input.js' %}" defer></script>
+{% endblock head %}
+
+{% block content %}
+<h2>ToDoの{% if view|is_update_view %}更新{% else %}作成{% endif %}</h2>
+<p>以下のフォームを入力してください。</p>
+<form method="post">
+    <table>
+        {% csrf_token %}
+        {{ form.as_table }}
+        <tr><th></th><td><button type="submit">{% if view|is_update_view %}更新{% else %}作成{% endif %}</button></td></tr>
+    </table>
+</form>
+
+
+
+{% endblock content %}

@@ -1,0 +1,197 @@
+@charset "UTF-8";
+
+/* 共通部分
+-------------------------------------*/
+html {
+    font-size: 100%;
+}
+body {
+    /* font-family: "afasda"; */
+    line-height: 1.7;
+    color: #1d1d1f;
+}
+a {
+    text-decoration: none;
+}
+img {
+    max-width: 100%;
+}
+.wrapper {
+    max-width: 1400px;
+    margin: 0 5%;
+    padding: 0 4%;
+}
+.main {
+    padding-top: 90px;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* HEADER
+-----------------------------------------------*/
+.page-header  {
+    box-shadow: 0px 2px 1px 1px rgb(102, 102, 102, 0.5);
+    height: fit-content;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #FFF; 
+}
+.page-header .wrapper {
+    display: flex;
+    justify-content: space-between;
+}
+.header-title {
+    display: flex;
+    align-items: center;
+    color: #5a5a5a;
+    padding: 0.75rem;
+}
+.header-title h1 {
+    font-size: 1.5rem;
+}
+.logo {
+    width: 50px;
+    margin-right: 0.75rem;
+    padding-bottom: 0.25rem;
+}
+.account-info {
+    display: flex;
+    align-items: center;
+}
+.user-nav {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem;
+    /* font-size: 1.125rem; */
+    border-radius: 0.5rem;
+    background-color: #efefef;
+    color: #999;
+    list-style: none;
+}
+.user-nav li:after {
+    padding: 0 0 1rem 1rem;
+    font-size: 1rem;
+    font-weight: normal;
+    content: '/';
+}
+.user-nav li:last-child::after {
+    padding: 0;
+    content: "";
+}
+.user-nav li a {
+    color: #5c5c5c;
+}
+.user-nav li a:hover {
+    color: #3998db;
+    text-decoration: underline;
+}
+/* ボタン */
+.button {
+    font-size: 1.125rem;
+    color: #808080;
+    border-radius: 2rem;
+    padding: 0.4rem 1rem;
+    box-shadow: 2px 2px 5px 1px rgb(102, 102, 102, 0.5);
+    transition: .2s;
+}
+.button:hover {
+    margin-top: 5px;
+    color:  #a6a6a6;
+}
+/* 会員登録ボタン */
+.account-registration.button {
+    background: #68cfc3;
+    color: #FFF;
+}
+.account-registration.button:hover {
+    background-color: #95ddd5;
+}
+
+/* MAIN
+----------------------------------------------------------------------- */
+.all-content {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+.main-content {
+    width: 74%;
+}
+.aside-content {
+    padding-top: 5%;
+    width: 22%;
+}
+.side-item-fixed {
+    position: sticky;
+    top: 140px;
+  }
+.sub-title {
+    font-size: 1.25rem;
+    padding: 0 8px 8px;
+    border-bottom: 2px #0bd solid;
+    font-weight: normal;
+}
+.sub-menu {
+    margin-bottom: 70px;
+    list-style: none;
+}
+.sub-menu li {
+    border-bottom: 1px #ddd solid;
+}
+.sub-menu a {
+    color: #432;
+    padding: 10px;
+    display: block;
+}
+.sub-menu a:hover {
+    color: #0bd;
+}
+.workmode {
+    margin: 0 auto;
+}
+.workmode-butto {
+    background-color: #5EC84E;
+    color: #FFF;
+    border: 0px;
+    line-height: 1.7;
+}
+.workmode-butto.button:hover {
+    background-color: #8ed983;
+    color: #fff;
+    transform: scale(0.95);
+    margin-top: 0;
+}
+.a-block-center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* FOOTER
+----------------------------------------------------------------------- */
+footer {
+    background-color: #1d1d1f;
+    text-align: center;
+    margin-top: auto;
+}
+footer p {
+    color: #FFF;
+    padding: 1.5rem 0rem;
+}
+
+
+/* DIALOG
+--------------------------------------------------------------------------- */
+.dialog {
+    display: none;
+}
+
+/* TODO */
+/* モバイル版
+--------------------------------------------------------------------------- */

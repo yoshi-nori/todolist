@@ -1,0 +1,76 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+
+{% block head %}
+<title>作業データの一覧</title>
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+{% endblock head %}
+
+{% block content %}
+    <h2>作業データの一覧</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags == 'todolist success' %}
+                <p>{{ message }}</p>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    <p><a id="today-model" href="{% url 'todolist:workdatemodel_detail' slug='today' %}">今日の作業</a></p>
+    <form action="{% url 'todolist:workdatemodel_new' %}" method="get"><button type="submit">作業データの作成</button></form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>作業予定日</th>
+                <th>平均計画実行時間割合</th>
+                <th>1日の進捗率</th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for workdatemodel in object_list %}
+                <tr>
+                    <td><a href="{% url 'todolist:workdatemodel_detail' slug=workdatemodel.slug %}">{{ workdatemodel.work_date }}</a></td>
+                    <td>{{ workdatemodel.average_plan_excution_time_rate }}</td>
+                    <td>{{ workdatemodel.todo_achievement_rate_in_a_day }}</td>
+                    <td><form action="{% url 'todolist:workdatemodel_delete' slug=workdatemodel.slug %}" method="get"><button type="submit">削除</button></form></td>
+                    <td><form action="{% url 'todolist:workdatemodel_edit' slug=workdatemodel.slug %}" method="get"><button type="submit">編集</button></form></td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    {% if page_obj.has_other_pages %}
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                {% if page_obj.has_previous %}
+                    <li><a class="page-link text-primary d-inline-block" href="../{{ page_obj.previous_page_number }}/"><<</a></li>
+                {% else %}
+                    <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#"><<</div></li>
+                {% endif %}
+
+                {% for page_num in page_obj.paginator.page_range %}
+                    {% if page_num %}
+                        {% if page_num == pages.number %}
+                            <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">{{ page_num }}</div></li>
+                        {% else %}
+                            <li><a class="page-link text-primary d-inline-block" href="../{{ page_num }}/">{{ page_num }}</a></li>
+                        {% endif %}
+                    {% else %}
+                        <li class="disabled"><a class="page-link text-secondary d-inline-block text-muted" href="#">・・・</a></li>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <li><a class="page-link text-primary d-inline-block" href="../{{ page_obj.next_page_number }}/">>></a></li>
+                {% else %}
+                    <li class="disabled"><div class="page-link text-secondary d-inline-block disabled" href="#">>></div></li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% endif %}
+
+{% endblock content %}

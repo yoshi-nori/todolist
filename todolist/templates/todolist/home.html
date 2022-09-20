@@ -1,0 +1,14 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+<title>Home</title>
+{% endblock head %}
+
+{% block content %}
+<h2>Home</h2>
+<p><a href="{% url 'todolist:todomodel_list' %}">ToDoリスト一覧</a></p>
+<p><a href="{% url 'todolist:workdatemodel_list' %}">作業データ一覧</a></p>
+<p><a id="today-model" href="{% url 'todolist:workdatemodel_detail' slug='today' %}">今日の作業</a></p>
+{% endblock content %}

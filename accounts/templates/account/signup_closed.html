@@ -1,0 +1,37 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block head_title %}{% trans "Sign Up Closed" %}{% endblock %}
+{% block extra_head %}
+    <link rel="stylesheet" type="text/css" href="{% static 'accounts/css/auth.css' %}">
+{% endblock %}
+
+{% block body %}
+<div class="a-block-center">
+  <a class="header-title" href="{% url 'todolist:index' %}">
+    <img class="logo" src="{% static 'accounts/img/icon.png' %}" alt="アイコン">
+    <h1>タスク管理アプリ</h1>
+  </a>
+</div>
+
+<div class="auth-main">
+  {% if messages %}
+    <div class="action-messages">
+      <ul>
+        {% for message in messages %}
+        <li>{{message}}</li>
+        {% endfor %}
+      </ul>
+    </div>
+  {% endif %}
+
+  <div class="a-box only-text">
+    <div class="auth-title">
+      <h2>{% trans "Sign Up Closed" %}</h2>
+    </div>
+    <p>{% trans "We are sorry, but the sign up is currently closed." %}</p>
+  </div>
+</div>
+{% endblock %}

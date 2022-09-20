@@ -1,0 +1,62 @@
+{% extends 'todolist/base.html' %}
+{% load static %}
+{% load todolist_extras %}
+
+{% block head %}
+<title>作業データの詳細 {{ workdatemodel.work_date }}</title>
+<link rel="stylesheet" type="text/css" href="{% static 'todolist/css/todolist_style.css' %}"/>
+{% endblock head %}
+
+{% block content %}
+    <h2>作業データの詳細</h2>
+    
+    <table>
+        <tr><th>作業日</th><td></td></tr>
+        <tr><th></th><td>{{ workdatemodel.work_date }}</td></tr>
+
+        <tr><th>平均計画実行時間割合</th><td></td></tr>
+        <tr><th></th><td>{{ workdatemodel.average_plan_excution_time_rate }}</td></tr>
+
+        <tr><th>1日の進捗率</th><td></td></tr>
+        <tr><th></th><td>{{ workdatemodel.todo_achievement_rate_in_a_day }}</td></tr>
+        
+        <tr><th>作業内容</th><td></td></tr>
+        {% for todomodel in todomodel_list %}
+            <div>
+            <tr>
+                <th>{{ todomodel.order }}</th><td></td>
+            </tr>
+            <tr>
+                <th>ToDo</th><td><a href="{% url 'todolist:todomodel_detail' pk=todomodel.id %}">{{ todomodel.title }}</a></td>
+            </tr>
+            <tr>
+                <th>期限</th><td>{{ todomodel.limit_time }}</td>
+            </tr>
+            <tr>
+                <th>目標時間</th><td>{{ todomodel.expected_time_min }}分</td>
+            </tr>
+            <tr>
+                <th>実際の時間</th><td>{{ todomodel.actual_time_min.0 }}分 {{ todomodel.actual_time_min.1 }}秒</td>
+            </tr>
+            <tr>
+                <th>計画実行時間割合</th><td>{{ todomodel.plan_excution_time_rate }}</td>
+            </tr>
+            <tr>
+                <th>ToDo達成割合</th><td>{{ todomodel.achievement_rate }}%</td>
+            </tr>
+            </div>
+        {% empty %}
+            <tr><th></th><td>ToDoが登録されていません。</td></tr>
+        {% endfor %}
+    </table>
+    <table>
+        <tr>
+            <td>
+                <form action="{% url 'todolist:workdatemodel_delete' slug=workdatemodel.slug %}" method="get"><button type="submit">削除</button></form>
+            </td>
+            <td>
+                <form action="{% url 'todolist:workdatemodel_edit' slug=workdatemodel.slug %}" method="get"><button type="submit">編集</button></form>
+            </td>
+        </tr>
+    </table>
+{% endblock content %}
