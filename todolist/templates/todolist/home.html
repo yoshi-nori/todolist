@@ -8,7 +8,10 @@
 
 {% block content %}
 <h2>Home</h2>
-<p><a href="{% url 'todolist:todomodel_list' %}">ToDoリスト一覧</a></p>
-<p><a href="{% url 'todolist:workdatemodel_list' %}">作業データ一覧</a></p>
-<p><a id="today-model" href="{% url 'todolist:workdatemodel_detail' slug='today' %}">今日の作業</a></p>
+<div class="">
+    <p><a href="{% url 'todolist:todomodel_list' %}">ToDoリスト一覧</a></p>
+    <p><a href="{% url 'todolist:workdatemodel_list' %}">作業データ一覧</a></p>
+    <p><a id="today-model" href="{% url 'todolist:workdatemodel_detail' slug='today' %}">今日の作業</a></p>
+    <p><a href="#">作業結果分析</a></p>
+</div>
 {% endblock content %}

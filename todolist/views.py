@@ -517,3 +517,11 @@ class WorkModeDropView(LoginRequiredMixin, generic.detail.SingleObjectTemplateRe
         return super().post(request, *args, **kwargs)
 
 
+class AnalysisView(LoginRequiredMixin, generic.View):
+    template_name = 'todolist/analysis.html'
+    
+    
+    def get(self, request, *args, **kwargs):
+        return super().get(request, *args, **kwargs)
+
+

@@ -23,4 +23,6 @@ urlpatterns = [
     
     path('workdates/workmode/<slug:slug>/<int:order>/', views.WorkModeView.as_view(),       name='workmode'), 
     path('workdates/workmode/<slug:slug>/drop/',        views.WorkModeDropView.as_view(),   name='workmode_drop'), 
+    
+    path('analysis/',                                   views.AnalysisView.as_view(),       name='analysis'),
     ]
